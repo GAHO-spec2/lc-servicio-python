@@ -1,0 +1,9 @@
+LC — servicio Python para Ventas y Mix.
+Desplegar esta carpeta en un servidor compatible con Docker/Python y HTTPS (no en Cloudflare Workers).
+El servicio no contiene credenciales ni ZIP de usuarios. No expone logs ni configuración. Atiende dos procesos simultáneos; directorios temporales se eliminan al terminar.
+Variables en el servidor Python: LCE_BACKEND_TOKEN (secreto aleatorio de al menos 32 caracteres), PORT (opcional, 8080), LC_4142_USERNAME, LC_4142_PASSWORD, LC_4142_HMAC_USER, LC_4142_HMAC_KEY, LC_04640_USERNAME, LC_04640_PASSWORD, LC_04640_HMAC_USER, LC_04640_HMAC_KEY.
+Variables en Sites: LCE_BACKEND_URL (URL HTTPS de este servicio), LCE_BACKEND_TOKEN (el mismo secreto del servidor).
+Instalar con python -m pip install -r requirements.txt; iniciar con python server.py o construir Dockerfile.
+Proteger el servicio detrás de HTTPS y limitar conexiones al proxy del sitio cuando el alojamiento lo permita. No publicar sin token configurado. Rutas: GET /health y POST /generate requieren Authorization Bearer. JSON: franchise,date,kind (sales/mix/both),stores (lista de códigos/terminaciones),all (booleano). Para ZIP adjunto usar multipart con request JSON y zip binario.
+El chat usa un intérprete acotado de instrucciones, no un modelo general. No necesita API de IA y no responde a temas fuera de este flujo. Una franquicia y fecha por solicitud. Año omitido en fecha con nombre de mes se interpreta como año actual de Ciudad Juárez y se muestra para revisar antes de generar.
+Cualquier solicitud requiere identidad del sitio privado. La conexión con el servidor y descarga autenticada quedan pendientes hasta configurar alojamiento y secretos. ZIP local de referencia permite probar sin claves de LC.
